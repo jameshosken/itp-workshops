@@ -8,7 +8,7 @@
 * If you have __no numpad__, _File > User Prefs > Input > Emulate Numpad_
 * If you have __no 3 button mouse__, _File > User Prefs > Input > Emulate 3 button mouse_
 * __Save user preferences__
-* Windows CUDA? Enable in User Preferences > System.
+* CUDA? Enable in User Preferences > System.
 * Change render engine to cycles: Info Panel (top) > change __Blend er Render__ to __Cycles__
 * I use windows, so when I say 'Alt' I mean 'Option' on the mac, and when I say 'Control' it will usually mean 'Command'
 
@@ -117,4 +117,5 @@ So many more tools than we can cover here, I will show two:
 	* Use the "Materials" data set
 * Shift + Z to render your image in viewport
 
-
+### Output
+* Use 'Render' tab in properties panel to choose where to render your image.
