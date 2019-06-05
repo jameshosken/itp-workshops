@@ -1,13 +1,13 @@
 # Asteroids in p5.js
 
 ## Complete Code
-https://editor.p5js.org/hosken/sketches/N4WNYPtQs
+https://editor.p5js.org/hosken/sketches/k93xnkA3X
 
 
 ## Housekeeping
 The easiest way to follow along with this workshop is to use the [p5 web editor](https://editor.p5js.org/). It's free and open to anyone; to save you'll need to create an account.
 
-We have a lot to cover in 2 hours. For the sake of flexibility this workshop has 4 checkpoints, each of which constitutes a noble goal. After each checkpoint we'll evaluate where we are and whether to spend time reviewing material or moving forwards.
+We have a lot to cover in 2 hours. For the sake of flexibility this workshop has 3 checkpoints, each of which constitutes a noble goal. After each checkpoint we'll evaluate where we are and whether to spend time reviewing material or moving forwards.
 
 Ask questions at any time. I will either try anwser directly, or ask you to wait for a checkpoint (usually because your question will be forthcomingly answered). If I cannot answer you question I shall refer you to a [higher authority](https://www.google.com/). Which leads to:
 
@@ -223,7 +223,7 @@ One last thing to clean up the code a bit: add a tweaking variable for number of
 
 
 ## Checkpoint 1
-How are we doing?
+How are we doing? *Save your sketch!*
 
 ---
 
@@ -439,8 +439,158 @@ function moveStars(){
 ```
 
 ## Checkpoint 2
-How are we doing?
+How are we doing? *Save your sketch!*
 
 ---
 
 ---
+
+## Adding Asteroids
+
+*Here we'll add asteroids to float around in space, detect whether we've hit them, then do something about it*
+
+### Like stars, only bigger
+
+We'll start by taking inspiration from the stars code
+
+We're changing up the code by adding a velocity vector, increasing the size, and obviously changing the names.
+```javascript
+function generateAsteroids(){
+  for (let i = 0; i < numOfAsteroids; i++) {
+    let asteroid = {}; //Define star locally
+    asteroid.pos = createVector(random(0, width), random(0, height));
+    asteroid.vel = createVector(random(-1, 1), random(-1, 1))
+    asteroid.diam = random(10, 50);
+    asteroids.push(asteroid); //Now add the star to the list
+  }
+}
+```
+
+### Move them and display them
+
+Similar to the way stars move, except using their own velocity information rather than the ship's.
+
+```javascript
+function moveAsteroids(){
+ 
+  for (let i = 0; i < asteroids.length; i++){
+    asteroids[i].pos.add(asteroids[i].vel);
+    checkEdges(asteroids[i]);
+  }
+  
+}
+
+function displayAsteroids() {
+  stroke(255);
+  for(let i = 0; i < asteroids.length; i++){
+    ellipse(asteroids[i].pos.x, 
+            asteroids[i].pos.y, 
+            asteroids[i].diam,
+            asteroids[i].diam);
+  }
+}
+```
+
+
+### Checking for collisions
+
+Collision detection can be a nightmare, so to simplify things we're going to pretend everything in our scene is a circle. We can detect if two circles are colliding by asking whether the sum of their radii is greater than the distance between their two centers. 
+
+We need to check each asteroid against the ship for collision. We could either:
+- put a detection algorithm in each asteroid and chack it against the ship, or
+- put a detection algorithm in the ship and check it against each asteroid. 
+
+At this point the decision is arbitrary but I can imagine in the future I'll want to check the ship for collisions against other things (powerups?, bullets?) so I'll attach it to the ship.
+
+To make our lives a *little* easier I'm going to rename targets[i] to t, so we don't have to do so much typing.
+
+Don't forget to add a **ship.diam** variable to make this work!
+
+```javascript
+//pass in a list of objects to check against
+function checkShipForCollisions(targets){
+  
+  //Note this will crash if the target object does not contain a 'pos' vector.
+  for (let i = 0; i < targets.length; i++){
+    let t = targets[i];
+    let distance = dist(ship.pos.x, ship.pos.y, t.pos.x, t.pos.y);
+
+    let sumOfRadii = ship.diam/2 + t.diam/2;
+
+    if(sumOfRadii > distance){
+      //We have a collision!
+      print("HIT");
+    }
+  }
+}
+
+```
+
+
+A quick and dirty way to end the game is have a global variable called 'isGameOver', set to false in the beginning. In the draw loop, if isGameOver, then do nothing else. One a hit is detected, set isGameOver to true.
+
+```javascript
+
+let isGameOver = false;
+
+function draw(){
+  background(0);
+  if(isGameOver){
+    return; //Ends the current function.
+  }
+}
+```
+
+Add text here for extra effect.
+
+## Checkpoint 3
+How are we doing? *Save your sketch!*
+
+---
+
+---
+
+
+## Extra Effects
+
+### Parallax for asteroids too
+The ship's velocity influnces the backdrop of the stars, so it makes sense that it would influence the asteroids too. This makes the game far more difficult and, hopefully, fun!
+
+```javascript
+    // Add this line to the moveAsteroids function.
+    v = createVector(ship.vel.x, ship.vel.y); // This copies the variable so that we are not changing the ship velocity directly.
+    asteroids[i].pos.add(v.mult(-1));
+    
+```
+
+### Prevent collision within first second of game
+Right now the asteroids spawn totally randomly. This means that they could start right on the ship. That's not a fun game to play. If we're a bit smarter about where the asteroids start we could give the player some breathing room at the start.
+
+
+Inside the asteroid generation function, we'll choose a random spot for the asteroid, but if it's within a certain distance of the ship, we'll choose another random position, and check again. We'll keep doing this until the asteroid is out of the 'danger zone'
+
+```javascript
+    //Inside generateAsteroids()
+    let pos = createVector(random(width), random(height));
+    //A while loop will keep repeating while the given condition is true. 
+    //In this case the given condition is that the distance between the ship and 
+    // the asteroid is less than 200. ONce that is no longer true, the while loop ends.
+    while (dist(pos.x, pos.y, ship.pos.x, ship.pos.y) < 200) {
+      pos = createVector(random(width), random(height));
+    }
+    //While loop has ended, thus the position is a safe distance away from the ship.
+    asteroid.pos = pos;
+
+    ```
+
+### Thruster feedback
+We can keep track of whether we are thrusting, and display that info in a meaningful way.
+
+Keep track of **ship.isThrusting** and use it to display an engine.
+
+
+## Moving Forward & Review
+
+You have all the tools required to create a bullet system with collision detection if that's what you wish to do, or you could leave the game as is and have the challenge be to avoid the asteroids for as long as possible. 
+
+Take a moment to reflect on what we've covered, if you're new to javascript this was likely a lot of info. As I said before, the goal here is not to absorb everything, rather get a sense of what patterns to looks for and how to ask google what you want to know. 
