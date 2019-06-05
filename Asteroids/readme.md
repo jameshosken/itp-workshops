@@ -31,7 +31,7 @@ There are only 2 numbers we care about today: **0** and **255**. When they are u
 Variables are like a box you can put stuff in.
 
 - **Local** variables exist within 2 {brackets} and cannot be accessed outside of those brackets
-- **Global** variables exist within 2 {brackets} and cannot be accessed outside of those brackets
+- **Global** variables exist outside function and can be accessed anywhere
 
 ## Section 1: Making a starfield
 
@@ -497,7 +497,7 @@ function displayAsteroids() {
 Collision detection can be a nightmare, so to simplify things we're going to pretend everything in our scene is a circle. We can detect if two circles are colliding by asking whether the sum of their radii is greater than the distance between their two centers. 
 
 We need to check each asteroid against the ship for collision. We could either:
-- put a detection algorithm in each asteroid and chack it against the ship, or
+- put a detection algorithm in each asteroid and check it against the ship, or
 - put a detection algorithm in the ship and check it against each asteroid. 
 
 At this point the decision is arbitrary but I can imagine in the future I'll want to check the ship for collisions against other things (powerups?, bullets?) so I'll attach it to the ship.
