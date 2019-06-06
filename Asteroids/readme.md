@@ -13,7 +13,7 @@ Ask questions at any time. I will either try anwser directly, or ask you to wait
 
 Everything we do here is googlable. I don't expect you'll absorb everything in 2 short hours, rather I hope to demonstrate some of the fundamental concepts so that you know what to google later. In addition to google the [p5 reference](https://p5js.org/reference/) is an important and valuable resource.
 
-If I go to fast please slow me down. If I'm going too slow for you feel free to experiment ahead using this guide.
+If I go too fast please slow me down. If I'm going too slow for you feel free to experiment ahead using this guide.
 
 ## Prologue: A quick review of p5 concepts 
 
