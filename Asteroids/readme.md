@@ -580,8 +580,7 @@ Inside the asteroid generation function, we'll choose a random spot for the aste
     }
     //While loop has ended, thus the position is a safe distance away from the ship.
     asteroid.pos = pos;
-
-    ```
+```
 
 ### Thruster feedback
 We can keep track of whether we are thrusting, and display that info in a meaningful way.
